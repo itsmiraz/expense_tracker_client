@@ -9,19 +9,22 @@ import ShowExpensesModal from './ShowExpensesModal';
 
 const Expense = () => {
     const [sideBarShow, SetSideBarShow] = useState('')
-    const { catagories, isLoading } = useContext(CATAGORIES_PROVIDER)
+    const { catagories, isLoading ,error,refetch} = useContext(CATAGORIES_PROVIDER)
     const [showExpenses, setShowExpenses] = useState('')
 
 
     if (isLoading) {
         return <LoadingSpinner></LoadingSpinner>
     }
+    if (error) {
+        return <Error/>
+    }
 
     return (
         <div>
             <div className='grid grid-cols-2 z-50 gap-6 py-10 '>
                 {
-                    catagories.map(cata => <ExpenseCard
+                    catagories?.map(cata => <ExpenseCard
                         key={cata._id}
                         SetSideBarShow={SetSideBarShow}
                         setShowExpenses={setShowExpenses}
@@ -52,6 +55,7 @@ const Expense = () => {
                 <ShowExpensesModal
                     showExpenses={showExpenses}
                     setShowExpenses={setShowExpenses}
+                    refetch={refetch}
                 />
             }
             {

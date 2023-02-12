@@ -7,7 +7,7 @@ export const CATAGORIES_PROVIDER = createContext()
 const Catagory_Context = ({ children }) => {
 
 
-    const { data: catagories, refetch, isLoading } = useQuery({
+    const { data: catagories, refetch, isLoading ,error} = useQuery({
         queryKey: ['catagories'],
         queryFn: async () => {
             const res = await fetch('http://localhost:5000/catagories')
@@ -20,7 +20,8 @@ const Catagory_Context = ({ children }) => {
     const data = {
     catagories,
         refetch,
-        isLoading
+        isLoading,
+        error
     }
     return (
         <CATAGORIES_PROVIDER.Provider value={data} >
