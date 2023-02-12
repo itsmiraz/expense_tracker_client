@@ -46,7 +46,7 @@ const ExpenseCard = ({ cata, SetSideBarShow, setShowExpenses }) => {
 
             <p className=' font-semibold text-white my-2'>Budget: {budget} $</p>
             <p className=' font-semibold text-white my-2'>Budget Left : {budgetLeft} $</p>
-            <progress className="progress transition-all my-2 progress-primary bg-gray-600 w-full" value={progress} max="100"></progress>
+            <progress className="progress s transition-all my-2 progress-primary bg-gray-600 w-full" value={progress} max="100"></progress>
 
             <div className='flex justify-between mt-2 font-semibold items-center'>
                 <button onClick={() => setShowExpenses(cata)} className='px-4 bg-blue-200 shadow-md text-gray-900 py-1 rounded'>View Expense</button>
