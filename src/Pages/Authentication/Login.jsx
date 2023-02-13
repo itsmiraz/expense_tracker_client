@@ -4,6 +4,7 @@ import toast from 'react-hot-toast';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { BarLoader } from 'react-spinners';
 import Wave from 'react-wavify';
+import LoadingSpinner from '../../Components/LoadingSpinner/LoadingSpinner';
 import { AuthContext } from '../../Context/UserContext';
 
 const Login = () => {
@@ -47,8 +48,8 @@ const Login = () => {
             .then(result => {
 
                 const user = result.user;
-                const role = 'user'
-                saveUser(user.email, user.displayName, role)
+             
+                saveUser(user.email, user.displayName, )
 
             })
             .catch(error => {
@@ -76,14 +77,14 @@ const Login = () => {
 
 
 
-    const saveUser = (email, name, role) => {
+    const saveUser = (email, name) => {
         const user = {
             email,
             name,
-            role,
+           
 
         }
-        fetch(` https://shop-now-server.vercel.app/user/${email}`, {
+        fetch(`http://localhost:5000/user/${email}`, {
             method: 'PUT',
             headers: {
                 'content-type': 'application/json'
@@ -96,8 +97,8 @@ const Login = () => {
                 setTimeout(() => {
                     navigate(from, { replace: true })
 
-                    toast.success('User Created SuccessFully')
-                }, 500);
+                    toast.success('Logined')
+                }, 300);
             })
 
 
@@ -110,7 +111,8 @@ const Login = () => {
                 animation ?
                     <>
                         <div className='flex justify-center items-center'>
-                            <BarLoader color="#ea580c" />
+                        <LoadingSpinner/>
+
                         </div>
                     </>
                     :

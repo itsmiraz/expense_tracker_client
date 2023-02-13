@@ -1,42 +1,44 @@
 import React, { useContext } from 'react';
 import { toast } from 'react-hot-toast';
 import { CATAGORIES_PROVIDER } from '../../Context/Catagory_Context';
+import { AuthContext } from '../../Context/UserContext';
 
 const Settings = () => {
     const { refetch } = useContext(CATAGORIES_PROVIDER)
-
+    const { user } = useContext(AuthContext)
     const handleCatagory = e => {
         e.preventDefault()
         const form = e.target;
         const catagory = form.catagory.value;
         const budget = form.budget.value;
-       
-       
 
-            const data = {
-                catagory,
-                budget,
-                expense: 0,
-                expenses: []
-            }
 
-            fetch('http://localhost:5000/addcatagory', {
-                method: 'POST',
-                headers: {
-                    'content-type': 'application/json'
-                },
-                body: JSON.stringify(data)
+
+        const data = {
+            catagory,
+            budget,
+            expense: 0,
+            expenses: [],
+            userEmail: user?.email
+        }
+
+        fetch('http://localhost:5000/addcatagory', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+                form.reset()
+                refetch()
+                toast.success('Catagory Added')
             })
-                .then(res => res.json())
-                .then(data => {
-                    console.log(data);
-                    form.reset()
-                    refetch()
-                    toast.success('Catagory Added')
-                })
 
-            console.log(data);
-            return
+        console.log(data);
+        return
 
 
     }

@@ -1,6 +1,5 @@
 import React from 'react';
 import { toast } from 'react-hot-toast';
-import { coolGray } from 'tailwindcss/colors';
 
 const ShowExpensesModal = ({ showExpenses ,setShowExpenses,refetch}) => {
 
@@ -35,7 +34,7 @@ const ShowExpensesModal = ({ showExpenses ,setShowExpenses,refetch}) => {
         <div className='absolute transition-all  right-0 top-0 z-40'>
 
 
-            <div className="bg-gray-800 py-10 text-white z-50 p-4 h-screen w-80 ">
+            <div className="bg-gray-800  rounded-2xl  py-10 text-white z-50 p-4 mt-10 h-[600px] w-80 ">
                 <p className='text-2xl font-bold mb-4'>{showExpenses.catagory}</p>
                 <ul className="">
                     {

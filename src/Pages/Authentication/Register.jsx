@@ -3,13 +3,14 @@ import toast from 'react-hot-toast';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { BarLoader } from 'react-spinners';
 import Wave from 'react-wavify';
+import LoadingSpinner from '../../Components/LoadingSpinner/LoadingSpinner';
 import { AuthContext } from '../../Context/UserContext';
 
 
 const Register = () => {
 
     const [animation, setAnimation] = useState(false)
-    const { signUp, updateUser } = useContext(AuthContext)
+    const { signUp,  setuserProfile} = useContext(AuthContext)
     const [error, setError] = useState('')
 
     const location = useLocation();
@@ -27,31 +28,25 @@ const Register = () => {
         const password = form.password.value;
 
         console.log(name, email, password);
-        if (!/(?=.*[A-Z])/.test(password)) {
-            setError('Please provide at least two uppercase');
-            return;
-        }
+        
         if (password.length < 6) {
             setError('Please should be at least 6 characters.');
             return;
         }
-        if (!/(?=.*[!@#$&*])/.test(password)) {
-            setError('Please add at least one special character');
-            return;
-        }
+        
         setError('');
         signUp(email, password)
             .then(result => {
               
-                const role = 'user'
+                
                 const userInfo = {
                     displayName: name
                 }
 
-                updateUser(userInfo)
+                setuserProfile(userInfo)
                     .then(() => {
                         setAnimation(true)
-                        saveUser(email, name, role);
+                        saveUser(email, name);
                     })
                     .catch(err => console.log(err));
 
@@ -66,14 +61,14 @@ const Register = () => {
 
 
 
-    const saveUser = (email, name, role) => {
+    const saveUser = (email, name) => {
         const user = {
             email,
             name,
-            role,
+            
 
         }
-        fetch(` https://shop-now-server.vercel.app/user/${email}`, {
+        fetch(`http://localhost:5000/user/${email}`, {
             method: 'PUT',
             headers: {
                 'content-type': 'application/json'
@@ -87,7 +82,7 @@ const Register = () => {
                     navigate(from, { replace: true })
 
                     toast.success('User Created SuccessFully')
-                }, 500);
+                }, 300);
             })
 
 
@@ -100,7 +95,7 @@ const Register = () => {
                 animation ?
                     <>
                         <div className='flex justify-center items-center'>
-                            <BarLoader color="#ea580c" />
+                            <LoadingSpinner/>
                         </div>
 
                     </>
@@ -113,16 +108,16 @@ const Register = () => {
                             <form onSubmit={handleSubmit} noValidate="" action="" className="space-y-6 ng-untouched ng-pristine ng-valid">
                                 <div className="space-y-1 text-sm">
                                     <label htmlFor="name" className="block  font-semibold">Full Name</label>
-                                    <input type="text" name="name" id="name" placeholder="Full name" className="w-full px-4 py-3 rounded-md  bg-blue-100 text-gray-700 focus:border-violet-400" />
+                                    <input type="text" name="name" id="name" placeholder="Full name" className="w-full backdrop-blur-md bg-white/10 focus:outline-none px-4 py-3 rounded-md border-gray-700  text-gray-100 focus:border-violet-400" />
                                 </div>
 
                                 <div className="space-y-1 text-sm">
                                     <label htmlFor="email" className="block  font-semibold">Email</label>
-                                    <input type="text" name="email" id="email" placeholder="Email" className="w-full px-4 py-3 rounded-md border-gray-700 bg-blue-100 text-gray-700 focus:border-violet-400" />
+                                    <input type="text" name="email" id="email" placeholder="Email" className="w-full backdrop-blur-md bg-white/10 focus:outline-none px-4 py-3 rounded-md border-gray-700  text-gray-100 focus:border-violet-400" />
                                 </div>
                                 <div className="space-y-1 text-sm">
                                     <label htmlFor="password" className="block  font-semibold">Password</label>
-                                    <input type="password" name="password" id="password" placeholder="Password" className="w-full px-4 py-3 rounded-md border-gray-700 bg-blue-100 text-gray-700 focus:border-violet-400" />
+                                    <input type="password" name="password" id="password" placeholder="Password" className="w-full backdrop-blur-md bg-white/10 focus:outline-none px-4 py-3 rounded-md border-gray-700  text-gray-100 focus:border-violet-400" />
                                     <div className="flex justify-end text-xs text-gray-400">
 
                                     </div>

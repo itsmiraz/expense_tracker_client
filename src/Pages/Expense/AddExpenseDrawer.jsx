@@ -1,9 +1,14 @@
 import React, { useContext } from 'react';
 import { toast } from 'react-hot-toast';
 import { CATAGORIES_PROVIDER } from '../../Context/Catagory_Context';
+import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
+
 const AddExpenseDrawer = ({ sideBarShow, SetSideBarShow }) => {
+  
+    sideBarShow ? disableBodyScroll(document) : enableBodyScroll(document)
+
     console.log(sideBarShow)
-const{refetch} = useContext(CATAGORIES_PROVIDER)
+    const { refetch } = useContext(CATAGORIES_PROVIDER)
     const handleAddExpense = e => {
         e.preventDefault()
 
@@ -12,10 +17,10 @@ const{refetch} = useContext(CATAGORIES_PROVIDER)
         const expense = form.expense.value;
 
         const newexpense = parseFloat(sideBarShow.expense) + parseFloat(expense)
-       
-       
+
+
         if (sideBarShow.budget < newexpense) {
-            
+
             toast.error('Inefficient Budget')
             return
         }
@@ -24,7 +29,7 @@ const{refetch} = useContext(CATAGORIES_PROVIDER)
             title,
             expense,
             newexpense,
-            remove:false
+            remove: false
 
         }
         fetch(`http://localhost:5000/addexpense/${sideBarShow._id}`, {
@@ -45,11 +50,11 @@ const{refetch} = useContext(CATAGORIES_PROVIDER)
 
 
     return (
-        <div className='absolute transition-all  right-0 top-0 z-40'>
+        <div className='absolute transition duration-300 ease-out  right-0 top-0 z-40'>
 
 
             <div className="">
-                <ul className="z-50 p-4 h-screen w-80 bg-gray-800 text-white">
+                <ul className="z-50 pt-10  font-semibold p-6 h-[500px] rounded-2xl mt-10 w-80 bg-gray-800 text-white">
                     <li><p className='text-2xl mb-4'>{sideBarShow.catagory}</p></li>
 
                     <form onSubmit={handleAddExpense} className='my-4'>
