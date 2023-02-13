@@ -2,13 +2,27 @@ import React, { useContext } from 'react';
 import { toast } from 'react-hot-toast';
 import { CATAGORIES_PROVIDER } from '../../Context/Catagory_Context';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
+import { v4 as uuid } from 'uuid';
 
 const AddExpenseDrawer = ({ sideBarShow, SetSideBarShow }) => {
   
+    const { refetch } = useContext(CATAGORIES_PROVIDER)
     sideBarShow ? disableBodyScroll(document) : enableBodyScroll(document)
 
-    console.log(sideBarShow)
-    const { refetch } = useContext(CATAGORIES_PROVIDER)
+
+    const unique_id = uuid();
+
+    let total = 0
+    const filteredExpenses = sideBarShow.expenses.filter(expense => expense.remove === false)
+    filteredExpenses.map(exp => total += parseFloat(exp.expense));
+    const budgetLeft = sideBarShow.budget - total
+
+
+
+   
+
+
+
     const handleAddExpense = e => {
         e.preventDefault()
 
@@ -16,10 +30,10 @@ const AddExpenseDrawer = ({ sideBarShow, SetSideBarShow }) => {
         const title = form.title.value;
         const expense = form.expense.value;
 
-        const newexpense = parseFloat(sideBarShow.expense) + parseFloat(expense)
+        // const newexpense = parseFloat(sideBarShow.budget) + parseFloat(expense)
 
 
-        if (sideBarShow.budget < newexpense) {
+        if (budgetLeft < expense) {
 
             toast.error('Inefficient Budget')
             return
@@ -28,7 +42,7 @@ const AddExpenseDrawer = ({ sideBarShow, SetSideBarShow }) => {
         const expenseData = {
             title,
             expense,
-            newexpense,
+            id:unique_id,
             remove: false
 
         }

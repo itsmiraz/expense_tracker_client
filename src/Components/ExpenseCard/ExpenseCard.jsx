@@ -4,7 +4,6 @@ import { coolGray } from 'tailwindcss/colors';
 
 
 const ExpenseCard = ({ cata, SetSideBarShow, setShowExpenses, refetch }) => {
-    // const [bgcolor,setbgColor]= useState('bg-[#023047]')
 
     const {
         catagory,
@@ -13,20 +12,22 @@ const ExpenseCard = ({ cata, SetSideBarShow, setShowExpenses, refetch }) => {
         expenses,
         _id
     } = cata
+
     let total = 0
-    expenses.map(exp => total += parseFloat(exp.expense));
+    const filteredExpenses = cata.expenses.filter(expense => expense.remove === false)
+    filteredExpenses.map(exp => total += parseFloat(exp.expense));
     const budgetLeft = budget - total
 
-    console.log('normal',budgetLeft)
+    console.log('normal', budgetLeft)
     console.log('reducer', total)
-    
-    
+
+
     const progress = (100 * budgetLeft) / budget
     console.log(progress, catagory, cata)
 
 
     const handleDeleteCatagory = id => {
-        fetch(` https://web-dev-full-stack-task-server.vercel.app/deletecatagory/${id}`, {
+        fetch(`https://web-dev-full-stack-task-server.vercel.app/deletecatagory/${id}`, {
             method: 'DELETE'
         })
             .then(res => res.json())

@@ -18,7 +18,7 @@ const Summary = () => {
         setCatagoryData(catagories[catagoryindex])
         setexpenseData(catagories[catagoryindex]?.expenses)
 
-    },[])
+    },[catagoryindex])
 
     // const handleSummury = index => {
     //     setexpenseData(catagories[index]?.expenses)

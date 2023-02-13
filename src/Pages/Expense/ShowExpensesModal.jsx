@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { toast } from 'react-hot-toast';
+import { coolGray } from 'tailwindcss/colors';
 
 const ShowExpensesModal = ({ showExpenses, setShowExpenses, refetch }) => {
     const [edit, setedit] = useState('')
     const filteredExpenses = showExpenses.expenses.filter(expense => expense.remove === false)
-    const DeletedExpenses = showExpenses.expenses.filter(expense => expense.remove === true)
+    const DeletedExpenses = showExpenses.expenses.filter(expense => expense.remove === 'true')
     const [newExpenseTitle,setnewExpenseTitle] = useState('')
     const [newExpenseBudget,setnewExpenseBudget] = useState('')
     const budgetLeft = showExpenses.budget - showExpenses.expense
@@ -18,12 +19,13 @@ const ShowExpensesModal = ({ showExpenses, setShowExpenses, refetch }) => {
         }
 
         const updateddata = {
-            expenseID: edit,
+            expenseID: data.id,
             newExpenseTitle : newExpenseTitle ? newExpenseTitle: data.title,
             newExpenseBudget: newExpenseBudget ? newExpenseBudget: data.expense
 
         }
-        fetch(` https://web-dev-full-stack-task-server.vercel.app/editexpense/${showExpenses._id}`, {
+        console.log(updateddata,data)
+        fetch(`https://web-dev-full-stack-task-server.vercel.app/editexpense/${showExpenses._id}`, {
             method: 'PUT',
             headers: {
                 'content-type': 'application/json'
@@ -43,7 +45,6 @@ const ShowExpensesModal = ({ showExpenses, setShowExpenses, refetch }) => {
     }
 
     const handleDeleteExpense = id => {
-
         const data = {
             expenseID: id
         }
@@ -109,7 +110,7 @@ const ShowExpensesModal = ({ showExpenses, setShowExpenses, refetch }) => {
                                                     <span onClick={() => setedit(i)}>Edit</span>
                                                 </>
                                         }</li>
-                                        <li><span onClick={() => handleDeleteExpense(i)} className='text-red-500'> Delete</span></li>
+                                        <li><span onClick={() => handleDeleteExpense(expense.id)} className='text-red-500'> Delete</span></li>
                                     </ul>
                                 </div>
                             </div>
