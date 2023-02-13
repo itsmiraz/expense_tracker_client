@@ -22,7 +22,7 @@ const Settings = () => {
             userEmail: user?.email
         }
 
-        fetch('http://localhost:5000/addcatagory', {
+        fetch('https://web-dev-full-stack-task-server.vercel.app/addcatagory', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'

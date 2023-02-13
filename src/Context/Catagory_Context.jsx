@@ -8,12 +8,11 @@ export const CATAGORIES_PROVIDER = createContext()
 const Catagory_Context = ({ children }) => {
 
     const {user} = useContext(AuthContext)
-    console.log(user)
     
     const { data: catagories, refetch, isLoading ,error} = useQuery({
-        queryKey: ['catagories'],
+        queryKey: ['catagories','user',user?.email],
         queryFn: async () => {
-            const res = await fetch(`http://localhost:5000/catagories?email=${user?.email}`)
+            const res = await fetch(`https://web-dev-full-stack-task-server.vercel.app/catagories?email=${user?.email}`)
             const data = await res.json()
             return data
         }

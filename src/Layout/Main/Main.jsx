@@ -40,8 +40,8 @@ const Main = () => {
                         <div className='divider my-0 m-0 p-0'>
                             
                             </div>
-                        <li><Link to='/' className=''>Summary</Link></li>
-                        <li><Link to='/expense' className=''>Expense</Link></li>
+                        <li><Link to='/summury' className=''>Summary</Link></li>
+                        <li><Link to='/' className=''>Expense</Link></li>
                         <li><Link to='/settings' className=''>Settings</Link></li>
                         <div className='divider my-0 m-0 p-0'>
                             

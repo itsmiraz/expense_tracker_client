@@ -18,12 +18,12 @@ export const router = createBrowserRouter([
 
             },
             {
-                path: '/',
+                path: '/summury',
                 element:<Private> <Summary /></Private>
 
             },
             {
-                path: '/expense',
+                path: '/',
                 element: <Private><Expense /></Private>
 
             },

@@ -1,34 +1,45 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, CartesianGrid } from 'recharts';
+import LoadingSpinner from '../../Components/LoadingSpinner/LoadingSpinner';
 import { CATAGORIES_PROVIDER } from '../../Context/Catagory_Context';
 
 const Summary = () => {
-    const [catagoryIndex, setCatagoryIndex] = useState(0)
+    const [catagoryindex,setCatagoryIndex] = useState(0)
     const [catagoryData, setCatagoryData] = useState({})
     const [expenseData, setexpenseData] = useState([])
-    const { catagories } = useContext(CATAGORIES_PROVIDER)
+    const { catagories, isLoading } = useContext(CATAGORIES_PROVIDER)
 
+    if (isLoading) {
+        return <LoadingSpinner />
+    }
 
     useEffect(() => {
-        setexpenseData(catagories[catagoryIndex]?.expenses)
-        setCatagoryData(catagories[catagoryIndex])
-    }, [catagoryIndex])
+        setCatagoryData(catagories[catagoryindex])
+        setexpenseData(catagories[catagoryindex]?.expenses)
+
+    },[])
+
+    // const handleSummury = index => {
+    //     setexpenseData(catagories[index]?.expenses)
+    //     setCatagoryData(catagories[index])
+    //     return
+    // }
 
     return (
         <div>
 
             {
-                catagoryData ?
+                catagories.length > 0 ?
                     <>
                         <div>
                             <div className='flex justify-between items-center'>
                                 <h1 className='text-xl font-bold my-10 text-white'>Summuray</h1>
-                                <h1 className='text-xl font-semibold bg-[#4354A5] px-2 py-1 rounded text-white my-5'>{catagoryData?.catagory}</h1>
+                                <h1 className='text-xl font-semibold bg-[#4354A5] px-2 py-1 rounded text-white my-5'>{catagoryData?.catagory ? catagoryData?.catagory : 'Please Select a Catagory'}</h1>
 
                                 <div className="dropdown dropdown-end">
-                                    <label tabIndex={0} className="btn text-white m-1">Catagories <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="ml-2 font-semibold text-white w-4 h-4">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 13.5L12 21m0 0l-7.5-7.5M12 21V3" />
+                                    <label tabIndex={0} className="btn text-white m-1">Catagories <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeLinejoin="1.5" stroke="currentColor" className="ml-2 font-semibold text-white w-4 h-4">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 13.5L12 21m0 0l-7.5-7.5M12 21V3" />
                                     </svg>
                                     </label>
                                     <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-gray-800 text-white rounded-box w-52">
@@ -52,10 +63,16 @@ const Summary = () => {
                             </div>
 
                             {
-                                catagoryData?.expense === 0 ?
-                                    <div className='w-[600px] h-[300px] flex justify-center items-center rounded-lg bg-gray-800'>
-                                        <h1 className='text-5xl font-bold text-gray-400'>Expenses is Empty</h1>
-                                    </div>
+                                expenseData?.length === 0 ?
+                                    <>
+
+
+                                        <div className='w-[600px] h-[300px] flex justify-center items-center rounded-lg bg-gray-800'>
+                                            <h1 className='text-5xl font-bold text-gray-400'>Expenses is Empty</h1>
+                                        </div>
+
+
+                                    </>
                                     :
                                     <>
                                         <BarChart className='rounded-lg pr-3 text-white font-semibold bg-gray-800 pt-5 ' width={600} height={300} data={expenseData}>
@@ -74,8 +91,8 @@ const Summary = () => {
                     :
                     <div className='w-[600px] h-[300px] flex mt-10 justify-center items-center rounded-lg bg-gray-800'>
                         <div className='text-center'>
-                        <h1 className='text-3xl font-bold text-gray-400'>You Don't have any Expense Details</h1>
-                        <Link to='/settings'><p className='underline my-2 text-white'>Add a Catagory?</p></Link>
+                            <h1 className='text-3xl font-bold text-gray-400'>You Don't have any Expense Details</h1>
+                            <Link to='/settings'><p className='underline my-2 text-white'>Add a Catagory?</p></Link>
                         </div>
                     </div>
             }

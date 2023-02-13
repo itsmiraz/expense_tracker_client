@@ -1,22 +1,41 @@
 import React, { useState } from 'react';
+import { toast } from 'react-hot-toast';
 import { coolGray } from 'tailwindcss/colors';
 
-const ExpenseCard = ({ cata, SetSideBarShow, setShowExpenses }) => {
+
+const ExpenseCard = ({ cata, SetSideBarShow, setShowExpenses, refetch }) => {
     // const [bgcolor,setbgColor]= useState('bg-[#023047]')
 
     const {
         catagory,
         budget,
-        expense
+        expense,
+        expenses,
+        _id
     } = cata
+    let total = 0
+    expenses.map(exp => total += parseFloat(exp.expense));
+    const budgetLeft = budget - total
 
-    const budgetLeft = budget - expense
-
-    console.log(budgetLeft)
-
-
+    console.log('normal',budgetLeft)
+    console.log('reducer', total)
+    
+    
     const progress = (100 * budgetLeft) / budget
     console.log(progress, catagory, cata)
+
+
+    const handleDeleteCatagory = id => {
+        fetch(` https://web-dev-full-stack-task-server.vercel.app/deletecatagory/${id}`, {
+            method: 'DELETE'
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data)
+                toast.error('DELETED')
+                refetch()
+            })
+    }
 
     return (
         <div
@@ -24,20 +43,20 @@ const ExpenseCard = ({ cata, SetSideBarShow, setShowExpenses }) => {
             ${progress > 80 ? 'bg-green-600' :
                     progress > 50 ? 'bg-blue-600' :
                         progress > 30 ? 'bg-orange-600' :
-                            progress > 10 ?'bg-red-600' : 'bg-red-600'
+                            progress > 10 ? 'bg-red-600' : 'bg-red-600'
 
                 } p-4 rounded-md `}>
             <div className='flex justify-between items-center'>
                 <h1 className='text-2xl font-bold text-white'>{catagory}</h1>
                 <div>
                     <div className="dropdown dropdown-end">
-                        <label tabIndex={0} className="text-white"> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z" />
+                        <label tabIndex={0} className="text-white"> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeLinejoin="1.5" stroke="currentColor" className="w-6 h-6">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z" />
                         </svg>
                         </label>
                         <ul tabIndex={0} className="dropdown-content text-white menu p-0 shadow bg-base-100 rounded-box w-32">
                             <li><a>Edit</a></li>
-                            <li><a> Delete</a></li>
+                            <li><span onClick={() => handleDeleteCatagory(_id)}> Delete</span></li>
                         </ul>
                     </div>
                 </div>

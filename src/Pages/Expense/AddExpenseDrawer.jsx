@@ -32,7 +32,7 @@ const AddExpenseDrawer = ({ sideBarShow, SetSideBarShow }) => {
             remove: false
 
         }
-        fetch(`http://localhost:5000/addexpense/${sideBarShow._id}`, {
+        fetch(`https://web-dev-full-stack-task-server.vercel.app/addexpense/${sideBarShow._id}`, {
             method: 'PUT',
             headers: {
                 'content-type': 'application/json'
@@ -58,8 +58,8 @@ const AddExpenseDrawer = ({ sideBarShow, SetSideBarShow }) => {
                     <li><p className='text-2xl mb-4'>{sideBarShow.catagory}</p></li>
 
                     <form onSubmit={handleAddExpense} className='my-4'>
-                        <input type="text" placeholder='Title' name='title' className='bg-transparent text-white my-2 font-semibold focus:outline-none border-none' />
-                        <input type="number" placeholder='Expense' name='expense' className='bg-transparent text-white my-2 font-semibold focus:outline-none border-none' />
+                        <input required type="text" placeholder='Title' name='title' className='bg-transparent text-white my-2 font-semibold focus:outline-none border-none' />
+                        <input required type="number" placeholder='Expense' name='expense' className='bg-transparent text-white my-2 font-semibold focus:outline-none border-none' />
                         <button type='submit' className='px-4 py-1 my-2 bg-blue-600 text-white font-semibold'>Add Expense</button>
                     </form>
 
