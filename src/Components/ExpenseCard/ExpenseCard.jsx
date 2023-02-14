@@ -56,7 +56,7 @@ const ExpenseCard = ({ cata, SetSideBarShow, setShowExpenses, refetch }) => {
                         </svg>
                         </label>
                         <ul tabIndex={0} className="dropdown-content text-white menu p-0 shadow bg-base-100 rounded-box w-32">
-                            <li><a>Edit</a></li>
+                           
                             <li><span onClick={() => handleDeleteCatagory(_id)}> Delete</span></li>
                         </ul>
                     </div>
