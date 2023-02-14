@@ -45,7 +45,7 @@ const Settings = () => {
 
     return (
         <div className='flex items-center  justify-center'>
-            <div className='w-96 mx-auto mt-20  p-5 text-white font-semibold bg-gray-800 shadow-lg rounded-md'>
+            <div className='md:w-96 mx-auto mt-20  p-5 text-white font-semibold bg-gray-800 shadow-lg rounded-md'>
                 <form action="" onSubmit={handleCatagory}>
 
                     <h1 className=' text-2xl '>Settings</h1>

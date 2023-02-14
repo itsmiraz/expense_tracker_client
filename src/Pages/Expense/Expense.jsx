@@ -42,7 +42,7 @@ const Expense = () => {
                     :
                     <>
                         <div>
-                            <div className='grid grid-cols-2 z-50 gap-6 py-10 '>
+                            <div className='grid grid-cols-1 md:grid-cols-2 z-50 gap-6 py-10 '>
                                 {
                                     catagories?.map(cata => <ExpenseCard
                                         key={cata._id}

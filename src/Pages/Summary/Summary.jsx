@@ -1,30 +1,64 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, CartesianGrid } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, CartesianGrid, ResponsiveContainer } from 'recharts';
+import { coolGray } from 'tailwindcss/colors';
 import LoadingSpinner from '../../Components/LoadingSpinner/LoadingSpinner';
 import { CATAGORIES_PROVIDER } from '../../Context/Catagory_Context';
-
+import './Summary.css'
 const Summary = () => {
-    const [catagoryindex,setCatagoryIndex] = useState(0)
+    const { catagories, isLoading } = useContext(CATAGORIES_PROVIDER)
+    const [catagoryindex, setCatagoryIndex] = useState(0)
     const [catagoryData, setCatagoryData] = useState({})
     const [expenseData, setexpenseData] = useState([])
-    const { catagories, isLoading } = useContext(CATAGORIES_PROVIDER)
-
+    let total = 0
     if (isLoading) {
         return <LoadingSpinner />
     }
 
-    useEffect(() => {
-        setCatagoryData(catagories[catagoryindex])
-        setexpenseData(catagories[catagoryindex]?.expenses)
+console.log(catagories[catagoryindex])
 
-    },[catagoryindex])
+    
 
-    // const handleSummury = index => {
-    //     setexpenseData(catagories[index]?.expenses)
-    //     setCatagoryData(catagories[index])
-    //     return
-    // }
+//     useEffect(() => {
+    
+//         if (catagoryindex === 0) {
+    
+//             setCatagoryData(catagories[0])
+//             const filteredExpenses = catagoryData?.expenses?.filter(expense => expense.remove !== 'true')
+//             filteredExpenses?.map(exp => total += parseFloat(exp.expense));
+//             setexpenseData(filteredExpenses)
+//             return   
+//         }
+//         else {
+//             setCatagoryData(catagories[catagoryindex])
+    
+//            
+          
+//           console.log(catagoryData)
+//             console.log(filteredExpenses)
+//             return
+//         }
+      
+// },[catagoryindex])
+   
+   
+   
+  
+  
+
+    const handleSummury = data => {
+        setCatagoryData(data)
+        const filteredExpenses = data?.expenses?.filter(expense => expense.remove !== 'true')
+                    filteredExpenses?.map(exp => total += parseFloat(exp.expense));
+                    setexpenseData(filteredExpenses)
+      
+      
+        return
+    }
+
+   
+
+  
 
     return (
         <div>
@@ -44,7 +78,7 @@ const Summary = () => {
                                     </label>
                                     <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-gray-800 text-white rounded-box w-52">
                                         {
-                                            catagories?.map((catagory, i) => <li><p className='text-white' onClick={() => setCatagoryIndex(i)}>{catagory.catagory}</p></li>)
+                                            catagories?.map((catagory, i) => <li key={i}><p className='text-white'  onClick={() => handleSummury(catagory)}>{catagory.catagory}</p></li>)
                                         }
                                     </ul>
                                 </div>
@@ -58,7 +92,7 @@ const Summary = () => {
 
                                 </div>
                                 <div>
-                                    <h1 className='text-4xl font-bold text-white my-5'><span className='text-xl text-red-500'>Total Expense :</span> $ {catagoryData?.expense}</h1>
+                                    <h1 className='text-4xl font-bold text-white my-5'><span className='text-xl text-red-500'>Total Expense :</span> $ {total}</h1>
                                 </div>
                             </div>
 
@@ -75,15 +109,20 @@ const Summary = () => {
                                     </>
                                     :
                                     <>
-                                        <BarChart className='rounded-lg pr-3 text-white font-semibold bg-gray-800 pt-5 ' width={600} height={300} data={expenseData}>
+                                        <div id='container' className='z-10 flex justify-center' >
+                                        <ResponsiveContainer className="bg-white rounded-lg " width="100%" height="100%">
 
-                                            <XAxis className='text-white' dataKey="title" stroke="#4354A5" />
-                                            <YAxis className='text-white' />
-                                            <Legend className='' width={100} wrapperStyle={{ top: 40, right: 20, backgroundColor: '#f5f5f5', border: '1px solid #d5d5d5', borderRadius: 3, lineHeight: '40px' }} />
-                                            <CartesianGrid className='text-white' stroke="#ccc" strokeDasharray="5 5" />
-                                            <Bar className='text-white' dataKey="expense" fill="#4354A5" barSize={30} />
+                                            <BarChart className='rounded-lg pr-3 text-white font-semibold bg-gray-800 pt-5 ' width={600} height={400} data={expenseData}>
 
-                                        </BarChart>
+                                                <XAxis className='text-white' dataKey="title" stroke="#4354A5" />
+                                                <YAxis className='text-white' />
+                                                <Legend className='' width={100} wrapperStyle={{ top: 40, right: 20, backgroundColor: '#f5f5f5', border: '1px solid #d5d5d5', borderRadius: 3, lineHeight: '40px' }} />
+                                                <CartesianGrid className='text-white' stroke="#ccc" strokeDasharray="5 5" />
+                                                <Bar className='text-white' dataKey="expense" fill="#4354A5" barSize={30} />
+
+                                            </BarChart>
+                                            </ResponsiveContainer>
+                                            </div>
                                     </>
                             }
                         </div>
